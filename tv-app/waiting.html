@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BP8 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <style>
+        .main h1 {
+            font-size: 7em;
+        }
+
+        #app {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(to top right, #4EB94F 50%, #9BCF6D) no-repeat;
+        }
+
+        #app > div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+        }
+
+        #app .main h1 {
+            font-size: 7em;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+        <div class="container text-center pt-4">
+            <div class="title-area">
+                <div class="main"><h1 class="fw-bold">CLASS STARTS IN</h1></div>
+            </div>
+            <div class="content-area d-flex justify-content-center mt-5">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/global.js"></script>
+    <script src="scripts/clock.js"></script>
+
+    <script>
+
+        // forTesting
+        var localPodId = 11;
+
+        var podInfo, stationIndex;
+
+        // simulate ajax request
+        if(response["status"]){
+            let data =response["data"];
+            // find pod
+            for(var i = 0; i < data.pods.length; i++){
+                var pod = data.pods[i];
+                if(pod.id === localPodId){
+                    podInfo = pod;
+                    break;
+                }
+            }
+
+
+            var text = "Class Starts In";
+            var stationId = getQuerystring("n");
+            if(stationId){
+                text = "REST";
+                document.querySelector(".title-area h1").innerText = podInfo.stations[parseInt(stationId)].name;
+            }
+
+            if(podInfo.stations.length > 0){
+                ClockCountdown.initiate(".content-area", 20);
+                ClockCountdown.startTimer(text, function (){
+                    window.location = "activity.html";
+                });
+            }
+
+        }else {
+            // show UI error
+        }
+
+    </script>
+</body>
+</html>
+

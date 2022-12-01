@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9dcafb15-9a11-420b-a43c-7705663960f0" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/backend/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/backend/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/backend/vendor/composer" />
+      <path value="$PROJECT_DIR$/backend/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/backend/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/backend/vendor/cboden/ratchet" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/http-foundation" />
+      <path value="$PROJECT_DIR$/backend/vendor/evenement/evenement" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/routing" />
+      <path value="$PROJECT_DIR$/backend/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/backend/vendor/ratchet/rfc6455" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/cache" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/dns" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/event-loop" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/promise" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/promise-timer" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/socket" />
+      <path value="$PROJECT_DIR$/backend/vendor/react/stream" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="29niT7iUnSdoHBj3xxS8jqCoXnw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wamp\www\CodeRedLabs\Nick\BP8TV" />
+      <recent name="C:\wamp\www\CodeRedLabs\Nick\BP8TV\scripts" />
+      <recent name="C:\wamp\www\CodeRedLabs\Nick\BP8TV\vendor" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\wamp\www\CodeRedLabs\Nick\BP8TV" />
+      <recent name="C:\wamp\www\CodeRedLabs\Nick\BP8TV\backend" />
+      <recent name="C:\wamp\www\CodeRedLabs\Nick\BP8TV\backend\vendor" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9dcafb15-9a11-420b-a43c-7705663960f0" name="Default Changelist" comment="" />
+      <created>1653755255057</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1653755255057</updated>
+      <workItem from="1653755256266" duration="8263000" />
+      <workItem from="1653841693558" duration="3678000" />
+      <workItem from="1654186889801" duration="4000" />
+      <workItem from="1657324927888" duration="5713000" />
+      <workItem from="1657972261839" duration="4757000" />
+      <workItem from="1657979539332" duration="4002000" />
+      <workItem from="1658073092029" duration="922000" />
+      <workItem from="1658075158282" duration="1487000" />
+      <workItem from="1658188386471" duration="687000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

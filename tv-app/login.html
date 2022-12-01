@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BP8 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <style>
+        .main h1 {
+            font-size: 7em;
+        }
+
+
+        .digit-group button {
+            width: 100px;
+            height: 100px;
+            background-color: #18182a;
+            border: none;
+            line-height: 50px;
+            text-align: center;
+            font-size: 2em;
+            font-family: "Raleway", sans-serif;
+            font-weight: 200;
+            color: white;
+            margin: 0 2px;
+        }
+
+        .digit-group .splitter {
+            padding: 0 5px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .prompt {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: white;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div id="app">
+
+        <div class="container text-center pt-4">
+            <div class="title-area mb-5">
+                <div class="main"><h1 class="fw-bold text-white">Select Pod</h1></div>
+            </div>
+            <div class="content-area d-flex justify-content-center mt-5">
+                <form method="get" class="digit-group" data-group-name="digits" data-autosubmit="false"
+                      autocomplete="off">
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/global.js"></script>
+    <script src="scripts/clock.js"></script>
+
+    <script>
+        function start() {
+            login(function (response) {
+                get_workouts_today(function (response) {
+
+                    console.log("Today Workouts", response);
+                    var workout = response.data[0];
+                    localStorage.setItem(WORKOUT, workout.id);
+                    get_workout_details(workout.id, function (response) {
+                        console.log("Workout Response", response);
+                        var details = response.data;
+                        var html = "";
+                        for(var i = 0; i < details.pods.length; i++){
+                            var pod = details.pods[i];
+                            html += '<button class="pod-button" type="text"  data-value="'+ (pod.id) +'" >'+ (i + 1) +'</button>';
+                        }
+                        document.querySelector(".content-area form").innerHTML = html;
+                        setup_event_listeners();
+                    });
+                });
+            });
+        }
+
+        function setup_event_listeners(){
+            var buttons = document.querySelectorAll(".pod-button");
+            for(var i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener("click", function (e){
+                    e.preventDefault();
+                    var podId = this.getAttribute("data-value");
+                    localStorage.setItem(POD, podId);
+
+                    window.location = "activity.html";
+                }, false);
+            }
+        }
+
+        start();
+
+//        window.location = "activity.html"
+
+        /*$.ajax({
+            method: "GET",
+            url: "http://bp8tv.local/api/workouts",
+            headers: {
+                'Authorization' : 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGRkZGNmYzhlODJjZjVlMDI5MmI5NDZmOTNjOTRjZjNiMGFhNjI0N2JkNWFlZmQ1NjE5NWU1YjYyODE5ODFlMzhiNWIzNDYwYjc4ODM1OGMiLCJpYXQiOjE2NTgxODk0MzQsIm5iZiI6MTY1ODE4OTQzNCwiZXhwIjoxNjg5NzI1NDM0LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.dkPu4W3Y0-vhcvsdfxiiLXo7bK_6ojguwQMan6cNkL7Hx0utGFTZEAAQXm2Qvdi5WCrglvDYDqdMeY0RGOsOyFU56Bs1DCwgqwzo5C55F8Wl4U_plVH6UZoa4BWNTYQv1U9tk9MwCTpioaOuZiv5e3-9983LanNT0MTUT2H3RLnww_5ZOuebRvAAZFDNV84t12g28npYzOVhgiSVVYLOdkrkxxI0KvIcv4OWmZyEy00zmu-pxHil5DuU6LdSTL8TSWnrDWvdwdwNwwC3b10XwTIx0x6otaUYz_uVN6Ipv1WKBfP1UPzoUbg-GEk_oTHANYvTLsKZvccYdsG4JME56sMNhHhOfY5-SnyLwnZ9Tx8DemWJHiBmkjwioDe6-CUz0HmQVsq2vCdAyzQAoOrz7AIVdUnQspBpNMMopwWuopU55fY6Ohj1PtCmR4sfvs6QdXxVe180A2gI8tQwwm1QGdZML6ezYhnAJ7cAtcGR7BCof014GaE7GChp1IDQPQU9yqDcIdvYZfkD222AYp0AP4UWOuh47vLOFZmigvGuqVp-Wbb3pHarUhNekclX1tcCvRHa4vsxmlsvnfsKSk3iHDr_UNqb-CpxKv61B3FLYbPzxTDa_nWi603dJzImjCnXjMYsR5nV9zUsnyUW8p_Pg5JG1MIRvjvia8eNTqhFmfw",
+            },
+        }).done(function (msg) {
+
+        });*/
+
+    </script>
+</body>
+</html>

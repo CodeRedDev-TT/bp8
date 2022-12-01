@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BP8 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <style>
+        .main h1 {
+            font-size: 7em;
+        }
+
+        #app {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+        }
+
+
+        .base-timer {
+            position: relative;
+            width: 800px;
+            height: 800px;
+        }
+
+        .base-timer__label {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color:white;
+        }
+        .base-timer__label-title {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            top: -50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color:white;
+        }
+
+    </style>
+</head>
+<body class="rest">
+    <div id="app">
+
+        <div class="container text-center pt-4">
+<!--            <div class="title-area">
+                <div class="main"><h1 class="fw-bold">Move To Next Station</h1></div>
+            </div>-->
+            <div class="content-area d-flex justify-content-center mt-5">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/global.js"></script>
+    <script src="scripts/clock.js"></script>
+
+    <script>
+        ClockCountdown.initiate(".content-area", 20,"Move to Next Station");
+        ClockCountdown.startTimer("", function (){
+            window.location = "activity.html"
+        });
+    </script>
+</body>
+</html>

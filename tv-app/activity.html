@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BP8 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+
+        .exercise-list h2 {
+            margin-bottom: 0;
+            color: white;
+            background-color: #0570F4;
+        }
+
+        /*     .BASE-TIMER, #BASE-TIMER-LABEL {
+                 WIDTH: 400PX;
+                 HEIGHT: 400PX;
+             }
+     */
+        .display h1 {
+            font-size: 4em;
+        }
+
+        .title-container {
+            position: sticky;
+            /*background: linear-gradient(to top right, #4EB94F 50%, #9BCF6D) no-repeat;*/
+            top: 0;
+        }
+
+        .exercise-list {
+            /*height: 4000px;*/
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div id="app" class="">
+        <div class="container-fluid text-center pt-4">
+            <div class="title-container">
+                <div class="title-area">
+                    <div class="main"><h1 class="text-white fw-bold"></h1></div>
+                </div>
+                <div class="row">
+                    <div class="d-flex justify-content-around">
+                        <div class="display">
+                            <h1 class="fw-bold sets">SETS</h1>
+                            <h1 class="text-white sets-text">2</h1>
+                        </div>
+                        <div class="content-area ">
+
+                        </div>
+                        <div class="display">
+                            <h1 class="fw-bold">LAPS</h1>
+                            <h1 class="text-white laps-text">3</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--            <div class="row   mt-5">
+                <div class="exercise-list "></div>
+            </div>-->
+            <div class="mt-5">
+                <div class="exercise-list row"></div>
+            </div>
+        </div>
+
+    </div>
+    <script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/global.js"></script>
+    <script src="scripts/html-builder.js"></script>
+    <script src="scripts/clock.js"></script>
+
+    <script>
+        // forTesting
+        var workoutId = parseInt(localStorage.getItem(WORKOUT));
+        var podId = parseInt(localStorage.getItem(POD));
+        var token = localStorage.getItem(ACCESS_TOKEN);
+        $.ajax({
+            method: "GET",
+            url: BASE_URL + "workouts/" + workoutId,
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+        }).done(function (response) {
+            if (!response.status)
+                return
+
+            var podInfo,
+                currentStationIndex = 0,
+                maxSets = 0,
+                maxLaps = 0,
+                currentSets = 0,
+                currentLaps = 0,
+                active = 0,
+                rest = 0;
+
+            // simulate ajax request
+            let data = response["data"];
+            // find pod
+            for (var i = 0; i < data.pods.length; i++) {
+                var pod = data.pods[i];
+                if (pod.id === podId) {
+                    podInfo = pod;
+                    maxSets = podInfo.sets;
+                    maxLaps = podInfo.laps;
+                    active = parseInt(podInfo.timesplit.split("/")[0].trim());
+                    rest = parseInt(podInfo.timesplit.split("/")[1].trim());
+                    break;
+                }
+            }
+
+
+            if (podInfo.stations.length > 0) {
+                var stationAssetHtml = "";
+                var cols = "col-6"
+                var prefix = IS_DEV ? "http://localhost/CodeRedLabs/Nick/bp8tv/" : "https://lovecrystalstt.com/bp8/";
+                for (i = 0; i < podInfo.stations.length; i++) {
+                    var workout = podInfo.stations[i];
+                    if (!workout.asset)
+                        workout.asset = {
+                            "id": 1,
+                            "file_original_name": "Screenshot_1 (1)",
+                            "file_name":prefix + "uploads/all/ihXqpE8bBn0cHR1huHvY01Lz0KNG7rXvWdI9CIKy.jpg",
+                            "file_size": 16458,
+                            "extension": "jpg",
+                            "type": "image",
+                            "created_at": "2022-05-25T03:08:06.000000Z",
+                            "updated_at": "2022-05-25T03:08:06.000000Z",
+                            "deleted_at": null
+                        }
+                    else{
+                        if(workout.asset.file_name.indexOf(prefix) < 0)
+                            workout.asset.file_name =  prefix +"storage/app/" + workout.asset.file_name;
+                    }
+                    stationAssetHtml += HTMLBuilder.generateStationAsset(workout.name, workout.asset.file_name, cols);
+                }
+                document.querySelector(".exercise-list").innerHTML = stationAssetHtml;
+            }
+
+            if (podInfo.stations.length > 0) {
+                startNextStation();
+            }
+
+            document.querySelector("#app .title-area h1").innerText = data.name;
+
+            function setNextSet() {
+                document.querySelector("body").classList.add("rest");
+                ClockCountdown.initiate("#app .content-area", rest, "Rest");
+                ClockCountdown.startTimer("", function () {
+                    startNextStation();
+                });
+            }
+
+            function startNextStation() {
+                currentSets++;
+                document.querySelector("body").classList.remove("rest");
+
+                console.log("is first", currentSets, " - ", maxSets);
+                if(currentSets > 1){
+                    console.log("not first");
+                   if(currentSets === (maxSets + 1)){// means we finished a lap
+                       currentLaps++;
+                       if(currentLaps === maxLaps){
+                           window.location = "move.html";
+                       }
+                       currentSets = 1;
+                   }
+                }// came off of first break
+
+
+                document.querySelector("#app .title-container .sets-text").innerText = (maxSets + 1) - currentSets;
+                document.querySelector("#app .title-container .laps-text").innerText = (maxLaps) - currentLaps;
+
+
+
+
+                ClockCountdown.initiate("#app .content-area", active, "Work");
+                ClockCountdown.startTimer("", function () {
+                   /* if (currentSets === maxSets) {
+                        currentSets = 0;
+
+                    }*/
+
+                    setNextSet();
+                });
+            }
+
+        });
+
+
+    </script>
+</body>
+</html>

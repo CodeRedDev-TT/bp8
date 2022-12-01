@@ -1,0 +1,15 @@
+html, body{
+    min-height: 100vh;
+}
+
+body{
+    background: linear-gradient(to top right, #4EB94F 50%, #9BCF6D) no-repeat;
+}
+
+body.rest{
+    background: #F72727;
+}
+
+.main h1{
+    font-size: 4em;
+}

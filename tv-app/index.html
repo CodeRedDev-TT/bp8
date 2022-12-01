@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BP8 </title>
+    <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+
+        .exercise-list h2 {
+            margin-bottom: 0;
+            color: white;
+            background-color: #0570F4;
+        }
+
+
+        .base-timer, .base-timer-label {
+            width: 200px;
+            height: 200px
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main">
+        <div id="waiting-app" class="app">
+
+            <div class="container text-center pt-4">
+                <div class="title-area">
+                    <div class="main"><h1 class="text-white fw-bold">{{ classTitle }}</h1></div>
+                    <div class="main"><h1 class="fw-bold">CLASS STARTS IN</h1></div>
+                </div>
+                <div class="content-area d-flex justify-content-center mt-5">
+                    <div class="base-timer">
+                        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g class="base-timer__circle">
+                                <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+                                <path
+                                        id="base-timer-path-remaining"
+                                        stroke-dasharray="283"
+                                        class="base-timer__path-remaining ${remainingPathColor}"
+                                        d="
+          M 50, 50
+          m -45, 0
+          a 45,45 0 1,0 90,0
+          a 45,45 0 1,0 -90,0
+        "
+                                ></path>
+                            </g>
+                        </svg>
+                        <span class="base-timer-label base-timer__label">{{ formatTime(timeLeft) }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="activity-app" class="app">
+            <div class="container text-center pt-4">
+                <div class="title-area">
+                    <div class="main"><h1 class="text-white fw-bold">{{ classTitle }}</h1></div>
+                </div>
+                <div class="row">
+                    <div class="d-flex justify-content-around">
+                        <div>
+                            <h1 class="fw-bold">SETS</h1>
+                            <h1 class="text-white">2</h1>
+                        </div>
+                        <div class="content-area ">
+                            <div class="base-timer">
+                                <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <g class="base-timer__circle">
+                                        <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+                                        <path
+                                                id="base-timer-path-remaining"
+                                                stroke-dasharray="283"
+                                                class="base-timer__path-remaining ${remainingPathColor}"
+                                                d="
+          M 50, 50
+          m -45, 0
+          a 45,45 0 1,0 90,0
+          a 45,45 0 1,0 -90,0
+        "
+                                        ></path>
+                                    </g>
+                                </svg>
+                                <span  class="base-timer-label base-timer__label">{{ formatTime(timeLeft) }}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h1 class="fw-bold">LAPS</h1>
+                            <h1 class="text-white">3</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row exercise-list justify-content-center mt-5">
+                    <div class="col-4" style="margin: 10px;">
+                        <h2>Sation 7</h2>
+                        <img class="img-fluid"
+                             src="https://images.saymedia-content.com/.image/t_share/MTc1MTI3Mzc0OTc4MDMyNzM1/how-much-weight-do-you-actually-push-up-during-a-pushup.jpg"
+                             alt="">
+                    </div>
+                    <div class="col-4" style="margin: 10px; ">
+
+                        <h2>Sation 2</h2>
+                        <img class="img-fluid"
+                             src="https://images.saymedia-content.com/.image/t_share/MTc1MTI3Mzc0OTc4MDMyNzM1/how-much-weight-do-you-actually-push-up-during-a-pushup.jpg"
+                             alt="">
+                    </div>
+                    <div class="col-4" style="margin: 10px;">
+
+                        <h2>Sation 1</h2>
+                        <img class="img-fluid"
+                             src="https://images.saymedia-content.com/.image/t_share/MTc1MTI3Mzc0OTc4MDMyNzM1/how-much-weight-do-you-actually-push-up-during-a-pushup.jpg"
+                             alt="">
+                    </div>
+                    <div class="col-4" style="margin: 10px;">
+
+                        <h2>Sation 4</h2>
+                        <img class="img-fluid"
+                             src="https://images.saymedia-content.com/.image/t_share/MTc1MTI3Mzc0OTc4MDMyNzM1/how-much-weight-do-you-actually-push-up-during-a-pushup.jpg"
+                             alt="">
+                    </div>
+                    <div class="col-4" style="margin: 10px;">
+
+                        <h2>Sation 6</h2>
+                        <img class="img-fluid"
+                             src="https://images.saymedia-content.com/.image/t_share/MTc1MTI3Mzc0OTc4MDMyNzM1/how-much-weight-do-you-actually-push-up-during-a-pushup.jpg"
+                             alt="">
+                    </div>
+                    <div class="col-4" style="margin: 10px;">
+                        <h2>Sation 8</h2>
+                        <img class="img-fluid"
+                             src="https://images.saymedia-content.com/.image/t_share/MTc1MTI3Mzc0OTc4MDMyNzM1/how-much-weight-do-you-actually-push-up-during-a-pushup.jpg"
+                             alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        function reqListener () {
+            console.log(this.responseText);
+        }
+
+        const oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", reqListener);
+        oReq.open("POSR", "https://lovecrystalstt.com/bp8/api/login");
+        oReq.send();
+
+
+
+    </script>
+</body>
+</html>
