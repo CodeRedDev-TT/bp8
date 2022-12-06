@@ -14,8 +14,15 @@ class StationController extends Controller
     public function index()
     {
 
-        $stations = Station::orderBy('name', 'ASC');
-        $stations = $stations->paginate(10);
+        $stations = DB::table("stations")
+                    ->leftJoin("station_categories", "stations.id", "=", "station_categories.stationid")
+                    ->leftjoin("categories", "station_categories.categoryid", "=", "categories.id")
+                    ->select("stations.id", "stations.name", "stations.asset", "categories.name as cname")
+                    ->orderBy("categories.name")
+                    ->paginate(10);
+        //$stations = $stations->paginate(10);
+        
+        //dd($stations);
 
         return view('station.index', compact('stations'));
     }
