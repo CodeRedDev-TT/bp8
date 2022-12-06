@@ -96,10 +96,10 @@
                         <div id="pod-details" class="row">
 
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="row mb-0">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary float-end">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
                                     {{ __('Submit') }}
                                 </button>
                             </div>
@@ -115,7 +115,7 @@
 @section('script')
     <script id="pod-template" type="text/html">
 
-        <div class="col-sm-12 pod-item">
+        <div class="col-sm-12 col-md-6 pod-item">
             <h2>Pod {i}</h2>
 
             <div class="row mb-3">
@@ -141,30 +141,18 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>
-                <div class="col-md-8">
-                    <input class="form-control" onchange="addStation(this.value, '{i}')"
-                           type="number"
-                           name="stations_{i}" id="stations_{i}" value="">
+                <label for="" class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>
+
+                <div class="col-md-6">
+
+                    <select name="stations_{i}[]" class="form-select stations-list" multiple aria-label="multiple select">
+                        @foreach($stations as $key => $station)
+                            <option value="{{$station->id}}">{{$station->name}}</option>
+                        @endforeach
+                    </select>
+
                 </div>
             </div>
-            <div class="row mb-3" id="stations_{i}_container">
-
-            </div>
-
-            {{--            <div class="row mb-3">--}}
-            {{--                <label for="" class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>--}}
-
-            {{--                <div class="col-md-6">--}}
-
-            {{--                    <select id="stations_{i}" name="stations_{i}[]" class="form-select stations-list" multiple aria-label="multiple select">--}}
-            {{--                        @foreach($stations as $key => $station)--}}
-            {{--                            <option value="{{$station->id}}">{{$station->name}}</option>--}}
-            {{--                        @endforeach--}}
-            {{--                    </select>--}}
-
-            {{--                </div>--}}
-            {{--            </div>--}}
         </div>
 
     </script>
@@ -179,8 +167,6 @@
             AIZ.uploader.previewGenerate();
         });
 
-        var app_stations = @json($stations);
-
         function addPods(pods){
             var html = "";
             for(var i = 0; i < pods; i++){
@@ -194,44 +180,6 @@
             $('.stations-list').select2({
                 theme: "classic"
             });
-        }
-
-        function addStation(stations, id){
-            var options = "";
-            for (var i = 0; i < stations; i++) {
-                options += "<div class=\"col-sm-4\">";
-                options += "<select name=\"stations_"+id+"[]\" onchange=\"showVideo(this, this.value)\" class=\"form-select stations-list"+id+"\" aria-label=\"select\">";
-                options += "<option value=\"\">Select one</option>";
-                $.each(app_stations, function (a,b) {
-                    options += "<option value=\""+b.id+"\">"+b.cname +" - "+b.name+"</option>";
-                });
-                options += "</select>";
-                options += "</div>";
-            }
-            $("#stations_"+id+"_container").html(options);
-            $(".stations-list"+id).select2({
-                theme: "classic"
-            });
-        }
-
-        function showVideo(obj, id){
-            var asset_path = "";
-            $.each(app_stations, function (a,b) {
-                if(id == b.id) {
-                    asset_path = b.file_name;
-                }
-            });
-
-            $(obj).prev('video').remove();
-            $(obj).next('video').remove();
-
-            if(asset_path != "") {
-                var options = "<video width=\"100%\" height=\"200\" controls>";
-                options += "<source src=\"{{getBaseURL()}}storage/app/"+asset_path+"\" type=\"video/mp4\">";
-                options += "</video>";
-
-                $(obj).after(options);
-            }
         }
 
     </script>

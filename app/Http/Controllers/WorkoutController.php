@@ -22,7 +22,13 @@ class WorkoutController extends Controller
 
     public function create()
     {
-        $stations = Station::orderBy('name', 'ASC')->get();
+        $stations = DB::table("stations")
+            ->leftJoin("station_categories", "stations.id", "=", "station_categories.stationid")
+            ->leftjoin("categories", "station_categories.categoryid", "=", "categories.id")
+            ->leftJoin("uploads", "stations.asset", "=", "uploads.id")
+            ->select("stations.id", "stations.name", "uploads.file_name", "categories.name as cname")
+            ->orderBy("categories.name")
+            ->get();
 
         return view('workout.add', compact('stations'));
     }
@@ -89,7 +95,14 @@ class WorkoutController extends Controller
             array_push($podids, $pod->id);
 
         $podstations = PodStation::whereIn('podid', $podids)->get();
-        $stations = Station::orderBy('name', 'ASC')->get();
+        //$stations = Station::orderBy('name', 'ASC')->get();
+        $stations = DB::table("stations")
+            ->leftJoin("station_categories", "stations.id", "=", "station_categories.stationid")
+            ->leftjoin("categories", "station_categories.categoryid", "=", "categories.id")
+            ->leftJoin("uploads", "stations.asset", "=", "uploads.id")
+            ->select("stations.id", "stations.name", "uploads.file_name", "categories.name as cname")
+            ->orderBy("categories.name")
+            ->get();
 
         return view('workout.edit', compact('workout', 'pods', 'podstations', 'stations'));
     }
