@@ -58,7 +58,7 @@ class WorkoutController extends Controller
                 $workoutPod = new WorkoutPod;
                 $workoutPod->sets = $pods['sets_'.($i+1)];
                 $workoutPod->laps = $pods['laps_'.($i+1)];
-                $workoutPod->timesplit = $pods['timesplit_'.($i+1)];
+                $workoutPod->timesplit = json_encode($pods['timesplit_'.($i+1)]);
                 $workoutPod->workoutid = $workout->id;
                 $workoutPod->save();
 
@@ -138,7 +138,7 @@ class WorkoutController extends Controller
             $workoutPod = new WorkoutPod;
             $workoutPod->sets = $pods['sets_'.($i+1)];
             $workoutPod->laps = $pods['laps_'.($i+1)];
-            $workoutPod->timesplit = $pods['timesplit_'.($i+1)];
+            $workoutPod->timesplit = json_encode($pods['timesplit_'.($i+1)]);
             $workoutPod->workoutid = $workout->id;
             $workoutPod->save();
 

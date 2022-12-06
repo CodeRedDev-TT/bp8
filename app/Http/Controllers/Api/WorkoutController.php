@@ -44,8 +44,10 @@ class WorkoutController extends Controller
         $pods = WorkoutPod::where('workoutid', $id)->get();
 
         $podids = array();
-        foreach($pods as $pod)
+        foreach($pods as $pod) {
             array_push($podids, $pod->id);
+            $pod->timesplit = json_decode($pod->timesplit);
+        }
 
         $podstations = PodStation::whereIn('podid', $podids)->get();
 

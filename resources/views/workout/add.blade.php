@@ -117,22 +117,17 @@
 
         <div class="col-sm-12 pod-item">
             <h2>Pod {i}</h2>
-
-            <div class="row mb-3">
-                <label class="col-md-4 col-form-label text-md-end">{{ __('Timesplit') }}</label>
-
-                <div class="col-md-8">
-                    <input type="text" class="form-control"
-                           name="timesplit_{i}" value="">
-                </div>
-            </div>
             <div class="row mb-3">
                 <label class="col-md-4 col-form-label text-md-end">{{ __('Sets') }}</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control"
+                    <input type="number" class="form-control" onchange="addTimeSplit(this.value, '{i}')"
                            name="sets_{i}" value="">
                 </div>
             </div>
+            <div class="row mb-3" id="timesplit_{i}_container">
+
+            </div>
+
             <div class="row mb-3">
                 <label class="col-md-4 col-form-label text-md-end">{{ __('Laps') }}</label>
                 <div class="col-md-8">
@@ -212,6 +207,18 @@
             $(".stations-list"+id).select2({
                 theme: "classic"
             });
+        }
+
+        function addTimeSplit(timeSplit, id){
+            var options = "";
+            for (var i = 0; i < timeSplit; i++) {
+                options += "<label class=\"col-md-4 col-form-label text-md-end\">{{ __('Timesplit') }}</label>";
+
+                options += "<div class=\"col-md-8 mb-1\">";
+                options += "<input type=\"text\" class=\"form-control\" name=\"timesplit_"+id+"[]\" value=\"\">";
+                options += "</div>";
+            }
+            $("#timesplit_"+id+"_container").html(options);
         }
 
         function showVideo(obj, id){
