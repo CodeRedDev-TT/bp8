@@ -77,6 +77,35 @@
                             @enderror
                         </div>
 
+                        <div class="row">
+                            <label for="pods" class="col-md-4 col-form-label text-md-end">{{ __('Waterbreak') }}</label>
+
+                            <div class="col-md-3">
+                                <input id="waterbreak_freq" name="waterbreak_freq" type="number" class="form-control">
+                                <p class="">Frequency</p>
+
+                                @error('waterbreak_freq')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="waterbreak_time" class="col-md-4 col-form-label text-md-end">&nbsp;</label>
+
+                            <div class="col-md-3">
+                                <input id="waterbreak_time" name="waterbreak_time" type="number" class="form-control">
+                                <p class="">Time</p>
+
+                                @error('waterbreak_time')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-3">
                             <label for="pods" class="col-md-4 col-form-label text-md-end">{{ __('Pods') }}</label>
 
@@ -96,6 +125,9 @@
                         <div id="pod-details" class="row">
 
                         </div>
+
+
+
                         <div class="clearfix"></div>
                         <div class="row mb-0">
                             <div class="col-md-12">

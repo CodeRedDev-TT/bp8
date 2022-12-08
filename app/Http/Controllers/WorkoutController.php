@@ -46,6 +46,8 @@ class WorkoutController extends Controller
             DB::beginTransaction();
             $workout = new Workout;
             $workout->name = $request->name;
+            $workout->waterbreak_frequency = $request->waterbreak_freq;
+            $workout->waterbreak_time = $request->waterbreak_time;
             $workout->days = implode(",", $request->days);
             $sets = $request->sets;
             $laps = $request->laps;
@@ -118,6 +120,8 @@ class WorkoutController extends Controller
         DB::beginTransaction();
         $workout = Workout::findOrFail($id);
         $workout->name = $request->name;
+        $workout->waterbreak_frequency = $request->waterbreak_freq;
+        $workout->waterbreak_time = $request->waterbreak_time;
         $workout->days = implode(",", $request->days);
         $sets = $request->sets;
         $laps = $request->laps;

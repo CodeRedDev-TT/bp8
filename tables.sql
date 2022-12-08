@@ -99,3 +99,9 @@ CREATE TABLE workout_tracks(
 
 alter table workout_pods
 ADD COLUMN exercises_videos VARCHAR(2000)
+
+--
+
+ALTER TABLE workouts
+ADD COLUMN waterbreak_frequency INT,
+ADD COLUMN waterbreak_time INT
