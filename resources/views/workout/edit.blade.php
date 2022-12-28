@@ -85,10 +85,12 @@
                             </div>
 
                             <div class="row">
-                                <label for="pods" class="col-md-4 col-form-label text-md-end">{{ __('Waterbreak') }}</label>
+                                <label for="pods"
+                                       class="col-md-4 col-form-label text-md-end">{{ __('Waterbreak') }}</label>
 
                                 <div class="col-md-3">
-                                    <input id="waterbreak_freq" value="{{$workout->waterbreak_frequency}}" name="waterbreak_freq" type="number" class="form-control">
+                                    <input id="waterbreak_freq" value="{{$workout->waterbreak_frequency}}"
+                                           name="waterbreak_freq" type="number" class="form-control">
                                     <p class="">Frequency</p>
 
                                     @error('waterbreak_freq')
@@ -102,7 +104,8 @@
                                 <label for="waterbreak_time" class="col-md-4 col-form-label text-md-end">&nbsp;</label>
 
                                 <div class="col-md-3">
-                                    <input id="waterbreak_time" value="{{$workout->waterbreak_time}}" name="waterbreak_time" type="number" class="form-control">
+                                    <input id="waterbreak_time" value="{{$workout->waterbreak_time}}"
+                                           name="waterbreak_time" type="number" class="form-control">
                                     <p class="">Time</p>
 
                                     @error('waterbreak_time')
@@ -120,7 +123,7 @@
                                 <div class="col-md-2">
                                     <input onchange="addPods(this.value)" id="pods" type="number"
                                            class="form-control @error('pods') is-invalid @enderror"
-                                           name="pods" value="{{ count($pods) }}">
+                                           name="pods" value="{{ $podcount }}">
 
                                     @error('pods')
                                     <span class="invalid-feedback" role="alert">
@@ -157,33 +160,39 @@
         <div class="col-sm-12 pod-item">
             <h2>Pod {i}</h2>
             <div class="row mb-3">
-                <label class="col-md-4 col-form-label text-md-end">{{ __('Sets') }}</label>
-                <div class="col-md-8">
-                    <input type="number" class="form-control" onchange="addTimeSplit(this.value, '{i}')"
-                           name="sets_{i}" value="">
-                </div>
-            </div>
-            <div class="row mb-3" id="timesplit_{i}_container">
-
-            </div>
-            <div class="row mb-3">
                 <label class="col-md-4 col-form-label text-md-end">{{ __('Laps') }}</label>
-                <div class="col-md-8">
-                    <input type="text" class="form-control"
-                           name="laps_{i}" value="">
+                <div class="col-md-5">
+                    <input type="number" class="form-control"
+                           name="laps_{i}" value="" onchange="addLap(this.value, '{i}')">
                 </div>
             </div>
-            <div class="row mb-3">
-                <label class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>
-                <div class="col-md-8">
-                    <input class="form-control" onchange="addStation(this.value, '{i}')"
-                           type="number"
-                           name="stations_{i}" id="stations_{i}" value="">
-                </div>
-            </div>
-            <div class="row mb-3" id="stations_{i}_container">
+            <hr>
+            <div class="row mb-3" id="lap_{i}_container">
 
             </div>
+
+            {{--            <div class="row mb-3">--}}
+            {{--                <label class="col-md-4 col-form-label text-md-end">{{ __('Sets') }}</label>--}}
+            {{--                <div class="col-md-8">--}}
+            {{--                    <input type="number" class="form-control" onchange="addTimeSplit(this.value, '{i}')"--}}
+            {{--                           name="sets_{i}" value="">--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
+            {{--            <div class="row mb-3" id="timesplit_{i}_container">--}}
+
+            {{--            </div>--}}
+
+            {{--            <div class="row mb-3">--}}
+            {{--                <label class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>--}}
+            {{--                <div class="col-md-8">--}}
+            {{--                    <input class="form-control" onchange="addStation(this.value, '{i}')"--}}
+            {{--                           type="number"--}}
+            {{--                           name="stations_{i}" id="stations_{i}" value="">--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
+            {{--            <div class="row mb-3" id="stations_{i}_container">--}}
+
+            {{--            </div>--}}
 
             {{--            <div class="row mb-3">--}}
             {{--                <label for="" class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>--}}
@@ -211,7 +220,7 @@
             AIZ.uploader.removeAttachment();
             AIZ.uploader.previewGenerate();
 
-            addPopulatedPods(@json($pods), @json($podstations));
+            addPopulatedPods({{$podcount}}, @json($laps), @json($pods), @json($podstations));
         });
 
         var app_stations = @json($stations);
@@ -227,9 +236,10 @@
             $("#pod-details").html(html);
         }
 
-        function addPopulatedPods(pods, podstations) {
+        function addPopulatedPods(podcount, laps, pods, podstations) {
             var html = "";
-            for (var i = 0; i < pods.length; i++) {
+
+            for (var i = 0; i < podcount; i++) {
 
                 html = $("#pod-template")[0].innerHTML;
 
@@ -237,104 +247,146 @@
 
                 $("#pod-details").append(html);
 
-                $("input[name=sets_" + (i + 1) + "]").val(pods[i].sets);
-                $("input[name=laps_" + (i + 1) + "]").val(pods[i].laps);
-                //$("input[name=timesplit_" + (i + 1) + "]").val(pods[i].timesplit);
-
-                try {
-                    var timeplits = JSON.parse(pods[i].timesplit);
-                    $.each(timeplits, function (x, e) {
-                        var options = "<label class=\"col-md-4 col-form-label text-md-end\">{{ __('Timesplit') }}</label>";
-
-                        options += "<div class=\"col-md-8 mb-1\">";
-                        options += "<input type=\"text\" class=\"form-control\" name=\"timesplit_" + (i + 1) + "[]\" value=\"" + e + "\">";
-                        options += "</div>";
-
-                        $("#timesplit_" + (i + 1) + "_container").append(options);
-                    });
-                }catch(e){
-                    $("input[name=sets_" + (i + 1) + "]").trigger('onchange');
-                }
-
-                var stations = podstations.filter(
-                    function (e) {
-                        return e.podid == pods[i].id;
+                var current_laps = laps.filter(
+                    function(e){
+                        return e.pod_number == (i+1);
                     }
                 );
 
-                $("#stations_" + (i + 1)).val(stations.length);
+                $("input[name=laps_" + (i + 1) + "]").val(current_laps.length);
+                addLap(current_laps.length, (i+1));
 
-                $.each(stations, function (x, e) {
-                    var options = "<div class=\"col-sm-4\">";
+                for (var j = 0; j < current_laps.length; j++) {
 
-                    var asset_path = "";
-                    $.each(app_stations, function (a,b) {
-                        if(e.stationid == b.id) {
-                            asset_path = b.file_name;
+                    var current_pods = pods.filter(
+                        function (e){
+                            return e.lap_id == current_laps[j].id
                         }
-                    });
+                    );
 
-                    if(asset_path != "") {
-                        options += "<video width=\"100%\" height=\"200\" controls>";
-                        options += "<source src=\"{{getBaseURL()}}storage/app/"+asset_path+"\" type=\"video/mp4\">";
-                        options += "</video>";
+                    for(var k = 0; k < current_pods.length; k++){
+                        try {
+                            var timeplits = JSON.parse(current_pods[k].timesplit);
+                            $("input[name=sets_" + (i + 1) + "_" + (j + 1) + "]").val(timeplits.length);
+                            $.each(timeplits, function (x, e) {
+                                var options = "<label class=\"col-md-4 col-form-label text-md-end\">{{ __('Timesplit') }}</label>";
+
+                                options += "<div class=\"col-md-8 mb-1\">";
+                                options += "<input type=\"text\" class=\"form-control\" name=\"timesplit_" + (i + 1) + "_" + (j + 1) + "[]\" value=\"" + e + "\">";
+                                options += "</div>";
+
+                                $("#timesplit_" + (i + 1) + "_" + (j + 1) + "_container").append(options);
+                            });
+                        } catch (e) {
+                            $("input[name=sets_" + (i + 1) + "_" + (j + 1) + "]").trigger('onchange');
+                        }
+
+                        var stations = podstations.filter(
+                            function (e) {
+                                return e.podid == current_pods[k].id;
+                            }
+                        );
+
+                        $("#stations_" + (i + 1) + "_" + (j + 1)).val(stations.length);
+
+                        $.each(stations, function (x, e) {
+                            var options = "<div class=\"col-sm-4\">";
+
+                            var asset_path = "";
+                            $.each(app_stations, function (a, b) {
+                                if (e.stationid == b.id) {
+                                    asset_path = b.file_name;
+                                }
+                            });
+
+                            if (asset_path != "") {
+                                options += "<video width=\"100%\" height=\"200\" controls>";
+                                options += "<source src=\"{{getBaseURL()}}storage/app/" + asset_path + "\" type=\"video/mp4\">";
+                                options += "</video>";
+                            }
+
+                            options += "<select name=\"stations_" + (i + 1) + "_" + (j + 1) + "[]\" onchange=\"showVideo(this, this.value)\" class=\"form-select stations-list" + (j + 1) + "\" aria-label=\"select\">";
+                            $.each(app_stations, function (a, b) {
+                                var selected = e.stationid == b.id ? "selected" : "";
+
+                                options += "<option " + selected + " value=\"" + b.id + "\">" + b.cname + " - " + b.name + "</option>";
+                            });
+                            options += "</select>";
+
+                            options += "</div>";
+                            $("#stations_" + (i + 1) + "_" + (j + 1) + "_container").append(options);
+                            //$("#stations_" + (i + 1) + " option[value='" + e.stationid + "']").prop("selected", true);
+                        });
+
+                        console.log(stations);
+                        $(".stations-list" + (j + 1)).select2({
+                            theme: "classic"
+                        });
                     }
 
-                    options += "<select name=\"stations_"+(i+1)+"[]\" onchange=\"showVideo(this, this.value)\" class=\"form-select stations-list"+(i+1)+"\" aria-label=\"select\">";
-                    $.each(app_stations, function (a,b) {
-                        var selected = e.stationid == b.id ? "selected" : "";
-
-                        options += "<option "+selected+" value=\""+b.id+"\">"+b.cname +" - "+b.name+"</option>";
-                    });
-                    options += "</select>";
-
-                    options += "</div>";
-                    $("#stations_"+(i+1)+"_container").append(options);
-                    //$("#stations_" + (i + 1) + " option[value='" + e.stationid + "']").prop("selected", true);
-                });
-
-                console.log(stations);
-                $(".stations-list"+(i+1)).select2({
-                    theme: "classic"
-                });
-
+                }
             }
         }
 
-        function addStation(stations, id){
+        function addStation(stations, id) {
             var options = "";
             for (var i = 0; i < stations; i++) {
                 options += "<div class=\"col-sm-4\">";
-                options += "<select name=\"stations_"+id+"[]\" onchange=\"showVideo(this, this.value)\" class=\"form-select stations-list"+id+"\" aria-label=\"select\">";
+                options += "<select name=\"stations_" + id + "[]\" onchange=\"showVideo(this, this.value)\" class=\"form-select stations-list" + id + "\" aria-label=\"select\">";
                 options += "<option value=\"\">Select one</option>";
-                $.each(app_stations, function (a,b) {
-                    options += "<option value=\""+b.id+"\">"+b.cname +" - "+b.name+"</option>";
+                $.each(app_stations, function (a, b) {
+                    options += "<option value=\"" + b.id + "\">" + b.cname + " - " + b.name + "</option>";
                 });
                 options += "</select>";
                 options += "</div>";
             }
-            $("#stations_"+id+"_container").html(options);
-            $(".stations-list"+(id)).select2({
+            $("#stations_" + id + "_container").html(options);
+            $(".stations-list" + (id)).select2({
                 theme: "classic"
             });
         }
 
-        function addTimeSplit(timeSplit, id){
+        function addLap(laps, id) {
+            var options = "";
+            for (var i = 0; i < laps; i++) {
+                options += "<div class=\"row mb-3\">";
+                options += "    <label class=\"col-md-4 col-form-label text-md-end\">Sets</label>";
+                options += "<div class=\"col-md-5\">";
+                options += "<input type=\"number\" class=\"form-control\" onchange=\"addTimeSplit(this.value, '" + id + "_" + (i + 1) + "')\" name=\"sets_" + id + "_" + (i + 1) + "\" value=\"\">";
+                options += "</div>";
+                options += "</div>";
+                options += "<div class=\"row mb-3\" id=\"timesplit_" + id + "_" + (i + 1) + "_container\">";
+                options += "</div>";
+                options += "<div class=\"row mb-3\">";
+                options += "<label class=\"col-md-4 col-form-label text-md-end\">Stations</label>";
+                options += "<div class=\"col-md-8\">";
+                options += "<input class=\"form-control\" onchange=\"addStation(this.value, '" + id + "_" + (i + 1) + "')\" type=\"number\" name=\"stations_" + id + "_" + (i + 1) + "\" id=\"stations_" + id + "_" + (i + 1) + "\" value=\"\">";
+                options += "</div>";
+                options += "</div>";
+                options += "<div class=\"row mb-3\" id=\"stations_" + id + "_" + (i + 1) + "_container\"></div>";
+                options += "<hr/>";
+            }
+
+            $("#lap_" + id + "_container").html(options);
+        }
+
+
+        function addTimeSplit(timeSplit, id) {
             var options = "";
             for (var i = 0; i < timeSplit; i++) {
                 options += "<label class=\"col-md-4 col-form-label text-md-end\">{{ __('Timesplit') }}</label>";
 
                 options += "<div class=\"col-md-8 mb-1\">";
-                options += "<input type=\"text\" class=\"form-control\" name=\"timesplit_"+id+"[]\" value=\"\">";
+                options += "<input type=\"text\" class=\"form-control\" name=\"timesplit_" + id + "[]\" value=\"\">";
                 options += "</div>";
             }
-            $("#timesplit_"+id+"_container").html(options);
+            $("#timesplit_" + id + "_container").html(options);
         }
 
-        function showVideo(obj, id){
+        function showVideo(obj, id) {
             var asset_path = "";
-            $.each(app_stations, function (a,b) {
-                if(id == b.id) {
+            $.each(app_stations, function (a, b) {
+                if (id == b.id) {
                     asset_path = b.file_name;
                 }
             });
@@ -342,9 +394,9 @@
             $(obj).prev('video').remove();
             $(obj).next('video').remove();
 
-            if(asset_path != "") {
+            if (asset_path != "") {
                 var options = "<video width=\"100%\" height=\"200\" controls>";
-                options += "<source src=\"{{getBaseURL()}}storage/app/"+asset_path+"\" type=\"video/mp4\">";
+                options += "<source src=\"{{getBaseURL()}}storage/app/" + asset_path + "\" type=\"video/mp4\">";
                 options += "</video>";
 
                 $(obj).after(options);

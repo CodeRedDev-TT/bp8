@@ -150,34 +150,46 @@
         <div class="col-sm-12 pod-item">
             <h2>Pod {i}</h2>
             <div class="row mb-3">
-                <label class="col-md-4 col-form-label text-md-end">{{ __('Sets') }}</label>
-                <div class="col-md-8">
-                    <input type="number" class="form-control" onchange="addTimeSplit(this.value, '{i}')"
-                           name="sets_{i}" value="">
-                </div>
-            </div>
-            <div class="row mb-3" id="timesplit_{i}_container">
-
-            </div>
-
-            <div class="row mb-3">
                 <label class="col-md-4 col-form-label text-md-end">{{ __('Laps') }}</label>
-                <div class="col-md-8">
-                    <input type="text" class="form-control"
-                           name="laps_{i}" value="">
+                <div class="col-md-5">
+                    <input type="number" class="form-control"
+                           name="laps_{i}" value="" onchange="addLap(this.value, '{i}')">
                 </div>
             </div>
-            <div class="row mb-3">
-                <label class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>
-                <div class="col-md-8">
-                    <input class="form-control" onchange="addStation(this.value, '{i}')"
-                           type="number"
-                           name="stations_{i}" id="stations_{i}" value="">
-                </div>
-            </div>
-            <div class="row mb-3" id="stations_{i}_container">
+            <hr>
+            <div class="row mb-3" id="lap_{i}_container">
 
             </div>
+
+{{--            <div class="row mb-3">--}}
+{{--                <label class="col-md-4 col-form-label text-md-end">{{ __('Sets') }}</label>--}}
+{{--                <div class="col-md-8">--}}
+{{--                    <input type="number" class="form-control" onchange="addTimeSplit(this.value, '{i}')"--}}
+{{--                           name="sets_{i}" value="">--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row mb-3" id="timesplit_{i}_container">--}}
+
+{{--            </div>--}}
+
+{{--            <div class="row mb-3">--}}
+{{--                <label class="col-md-4 col-form-label text-md-end">{{ __('Laps') }}</label>--}}
+{{--                <div class="col-md-8">--}}
+{{--                    <input type="text" class="form-control"--}}
+{{--                           name="laps_{i}" value="">--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row mb-3">--}}
+{{--                <label class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>--}}
+{{--                <div class="col-md-8">--}}
+{{--                    <input class="form-control" onchange="addStation(this.value, '{i}')"--}}
+{{--                           type="number"--}}
+{{--                           name="stations_{i}" id="stations_{i}" value="">--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row mb-3" id="stations_{i}_container">--}}
+
+{{--            </div>--}}
 
             {{--            <div class="row mb-3">--}}
             {{--                <label for="" class="col-md-4 col-form-label text-md-end">{{ __('Stations') }}</label>--}}
@@ -239,6 +251,30 @@
             $(".stations-list"+id).select2({
                 theme: "classic"
             });
+        }
+
+        function addLap(laps, id){
+            var options = "";
+            for (var i = 0; i < laps; i++) {
+                options += "<div class=\"row mb-3\">";
+                options += "    <label class=\"col-md-4 col-form-label text-md-end\">Sets</label>";
+                options += "<div class=\"col-md-5\">";
+                options += "<input type=\"number\" class=\"form-control\" onchange=\"addTimeSplit(this.value, '"+id+"_"+(i+1)+"')\" name=\"sets_"+id+"_"+(i+1)+"\" value=\"\">";
+                options += "</div>";
+                options += "</div>";
+                options += "<div class=\"row mb-3\" id=\"timesplit_"+id+"_"+(i+1)+"_container\">";
+                options += "</div>";
+                options += "<div class=\"row mb-3\">";
+                options += "<label class=\"col-md-4 col-form-label text-md-end\">Stations</label>";
+                options += "<div class=\"col-md-8\">";
+                options += "<input class=\"form-control\" onchange=\"addStation(this.value, '"+id+"_"+(i+1)+"')\" type=\"number\" name=\"stations_"+id+"_"+(i+1)+"\" id=\"stations_"+id+"_"+(i+1)+"\" value=\"\">";
+                options += "</div>";
+                options += "</div>";
+                options += "<div class=\"row mb-3\" id=\"stations_"+id+"_"+(i+1)+"_container\"></div>";
+                options += "<hr/>";
+            }
+
+            $("#lap_"+id+"_container").html(options);
         }
 
         function addTimeSplit(timeSplit, id){

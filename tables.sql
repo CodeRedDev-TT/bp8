@@ -104,4 +104,24 @@ ADD COLUMN exercises_videos VARCHAR(2000)
 
 ALTER TABLE workouts
 ADD COLUMN waterbreak_frequency INT,
-ADD COLUMN waterbreak_time INT
+ADD COLUMN waterbreak_time INT;
+
+
+
+CREATE TABLE pod_laps(
+     id BIGINT AUTO_INCREMENT,
+     workoutid BIGINT,
+     created_at timestamp NOT NULL DEFAULT current_timestamp(),
+     updated_at timestamp NOT NULL DEFAULT current_timestamp(),
+     deleted_at timestamp NULL DEFAULT NULL,
+     PRIMARY KEY(id)
+);
+
+ALTER TABLE pod_laps
+    ADD COLUMN pod_number BIGINT;
+
+ALTER TABLE workout_pods
+ ADD COLUMN lap_id BIGINT;
+
+ALTER TABLE workout_pods
+DROP COLUMN laps;
