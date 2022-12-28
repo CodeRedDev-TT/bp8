@@ -112,7 +112,10 @@ class WorkoutController extends Controller
             array_push($podlaps, $lap->pod_number);
         }
         $podlaps = array_unique($podlaps);
-        $podcount = max($podlaps);
+        $podcount = 0;
+        if(!is_array($podlaps)){
+            $podcount = max($podlaps);
+        }
         
         $podids = array();
         foreach($pods as $pod)
