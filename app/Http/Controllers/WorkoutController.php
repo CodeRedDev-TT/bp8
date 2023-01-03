@@ -107,13 +107,15 @@ class WorkoutController extends Controller
         $laps = PodLap::where('workoutid', $id)->get();
         $pods = WorkoutPod::where('workoutid', $id)->get();
     
+        
         $podlaps = array();
         foreach($laps as $lap){
             array_push($podlaps, $lap->pod_number);
         }
+        
         $podlaps = array_unique($podlaps);
         $podcount = 0;
-        if(!is_array($podlaps)){
+        if(is_array($podlaps)){
             $podcount = max($podlaps);
         }
         
